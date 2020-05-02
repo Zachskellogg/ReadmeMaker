@@ -23,7 +23,7 @@ const questions = [
     },
     {
         type: "list",
-        name: "License",
+        name: "license",
         message: "What license does your droject require?",
         choices: ["GPL 3.0", "MIT", "Apache 2.0", "none"]
     },
