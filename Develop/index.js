@@ -1,14 +1,14 @@
 const fs = require("fs");
 const path = require("path");
 const inquirer = require("inquirer");
-const api = require("./utils/api");
-const mkDown = require("./utilis/generateMarkdown.js");
+const getApi = require("./utils/api");
+const mkDown = require("./utils/generateMarkdown");
 
 
 const questions = [
     {
         type: "input",
-        name: "Git",
+        name: "git",
         message: "Please enter your Github username"
     },
     {
@@ -53,10 +53,17 @@ const questions = [
 ];
 
 function writeToFile(fileName, data) {
+    return fs.writeFileSync(path.join(process.cwd(), fileName), data);
 }
 
 function init() {
-
+    inquirer.prompt(questions)
+    .then((responses) => {
+        getApi.getUser(responses.git)
+        .then(({data}) => {
+            writeToFile("ReadMe.md", mkDown({...responses, ...data}));
+        });
+    });
 }
 
 init();
